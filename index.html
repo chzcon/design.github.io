@@ -1,951 +1,992 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI设计师作品集</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.prod.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈自成 | UI设计师作品集</title>
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 自定义配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#FF7D00',
+            dark: '#1D2939',
+            light: '#F9FAFB'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .text-gradient {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .transition-transform-opacity {
+        transition-property: transform, opacity;
+      }
+      .grid-masonry {
+        grid-template-rows: masonry;
+      }
+    }
+  </style>
+  
+  <style>
+    /* 全局动画设置 */
+    html {
+      scroll-behavior: smooth;
+    }
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#165DFF',
-                        secondary: '#FF7D00',
-                        dark: '#1E293B',
-                        light: '#F8FAFC'
-                    },
-                    fontFamily: {
-                        inter: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
+    /* 基础动画 */
+    .fade-in {
+      animation: fadeIn 0.8s ease forwards;
+      opacity: 0;
+    }
     
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .transition-transform-opacity {
-                transition-property: transform, opacity;
-            }
-            .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-            }
-            .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-        }
-    </style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 悬停动画 */
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 加载动画 */
+    .loader {
+      border-top-color: #165DFF;
+      animation: spinner 0.8s linear infinite;
+    }
+    
+    @keyframes spinner {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* 微信小程序适配 */
+    @media (max-width: 480px) {
+      .min-h-screen {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+      }
+      
+      .w-full {
+        width: 100%;
+      }
+      
+      .px-4 {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      
+      .py-8 {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+      
+      .text-2xl {
+        font-size: 1.5rem;
+      }
+      
+      .text-xl {
+        font-size: 1.25rem;
+      }
+      
+      .text-lg {
+        font-size: 1.125rem;
+      }
+    }
+  </style>
 </head>
-<body class="font-inter bg-light text-dark antialiased">
-    <!-- 导航栏 -->
-    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-white text-shadow">设计师<span class="text-secondary">作品集</span></a>
-            
-            <!-- 桌面导航 -->
-            <nav class="hidden md:flex space-x-8">
-                <a href="#home" class="text-white hover:text-secondary transition-colors">首页</a>
-                <a href="#about" class="text-white hover:text-secondary transition-colors">关于我</a>
-                <a href="#skills" class="text-white hover:text-secondary transition-colors">技能</a>
-                <a href="#portfolio" class="text-white hover:text-secondary transition-colors">作品集</a>
-                <a href="#process" class="text-white hover:text-secondary transition-colors">设计流程</a>
-                <a href="#testimonials" class="text-white hover:text-secondary transition-colors">客户评价</a>
-            </nav>
-            
-            <!-- 移动端菜单按钮 -->
-            <button id="menu-toggle" class="md:hidden text-white text-2xl">
-                <i class="fa fa-bars"></i>
-            </button>
+<body class="font-inter bg-light text-dark overflow-x-hidden">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+    <div class="container mx-auto px-4 md:px-8">
+      <nav class="flex items-center justify-between">
+        <a href="#" class="text-lg font-bold text-primary flex items-center gap-2">
+          <image src="./图片处理.png" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5z"/>
+          </image>
+          <span class="text-black">ZICheng chen</span>
+        </a>
+        
+        <!-- 桌面导航 -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="font-medium hover:text-primary transition-colors">首页</a>
+          <a href="#portfolio" class="font-medium hover:text-primary transition-colors">B端设计</a>
+          <a href="#portfolio" class="font-medium hover:text-primary transition-colors">平面设计</a>
+          <a href="#about" class="font-medium hover:text-primary transition-colors">个人介绍</a>
         </div>
         
-        <!-- 移动端导航菜单 -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
-            <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
-                <a href="#home" class="text-dark hover:text-primary transition-colors py-2">首页</a>
-                <a href="#about" class="text-dark hover:text-primary transition-colors py-2">关于我</a>
-                <a href="#skills" class="text-dark hover:text-primary transition-colors py-2">技能</a>
-                <a href="#portfolio" class="text-dark hover:text-primary transition-colors py-2">作品集</a>
-                <a href="#process" class="text-dark hover:text-primary transition-colors py-2">设计流程</a>
-                <a href="#testimonials" class="text-dark hover:text-primary transition-colors py-2">客户评价</a>
-            </div>
-        </div>
-    </header>
+        <!-- 移动端菜单按钮 -->
+        <button id="menu-toggle" class="md:hidden text-dark focus:outline-none">
+          <span class="fa fa-bars text-xl"></span>
+        </button>
+      </nav>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full mt-4 rounded-lg overflow-hidden">
+      <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+        <a href="#home" class="font-medium hover:text-primary transition-colors py-2">首页</a>
+        <a href="#portfolio" class="font-medium hover:text-primary transition-colors py-2">B端设计</a>
+        <a href="#portfolio" class="font-medium hover:text-primary transition-colors py-2">平面设计</a>
+        <a href="#about" class="font-medium hover:text-primary transition-colors py-2">个人介绍</a>
+        <a href="#" class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full transition-all hover:shadow-lg text-center">
+          下载简历
+        </a>
+      </div>
+    </div>
+  </header>
 
-    <!-- 英雄区域 -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://picsum.photos/id/1067/1920/1080" alt="设计背景" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-dark/60"></div>
+  <!-- 主内容区 -->
+  <main>
+    <!-- 首页/英雄区 -->
+    <section id="home" class="pt-0 pb-0 h-screen flex items-center justify-center relative overflow-hidden bg-white">
+      <div class="absolute inset-0 bg-gradient-to-b from-gray-50 to-gray-100 z-0"></div>
+      
+      <div class="w-full max-w-6xl px-8 relative z-10 text-center">
+        <div class="mb-16">
+          <h1 class="text-[clamp(2.5rem,6vw,4rem)] font-bold text-gray-800 mb-6">个人作品集</h1>
+          <p class="text-[clamp(1.2rem,3vw,1.8rem)] text-gray-600 uppercase tracking-widest">UI/UX DESIGNER</p>
         </div>
         
-        <div class="container mx-auto px-4 z-10 text-center">
-            <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] font-bold text-white mb-4 leading-tight">
-                创造<span class="text-secondary">有意义</span>的设计体验
-            </h1>
-            <p class="text-[clamp(1rem,2vw,1.25rem)] text-white/90 max-w-2xl mx-auto mb-8">
-                专注于用户体验设计和界面设计，致力于创造美观且功能强大的数字产品
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#portfolio" class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full transition-all transform hover:scale-105 shadow-lg">
-                    查看作品集
-                </a>
-                <a href="#about" class="bg-transparent border-2 border-white text-white hover:bg-white/10 px-8 py-3 rounded-full transition-all">
-                    了解更多
-                </a>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          <a href="#app-design" class="group">
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
+              <span class="fa fa-mobile text-4xl text-primary mb-4 block"></span>
+              <h3 class="text-xl font-medium text-gray-800">APP设计</h3>
             </div>
+          </a>
+          <a href="#portfolio" class="group">
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
+              <span class="fa fa-cubes text-4xl text-primary mb-4 block"></span>
+              <h3 class="text-xl font-medium text-gray-800">B端设计</h3>
+            </div>
+          </a>
+          <a href="#graphic-design" class="group">
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
+              <span class="fa fa-paint-brush text-4xl text-primary mb-4 block"></span>
+              <h3 class="text-xl font-medium text-gray-800">平面设计</h3>
+            </div>
+          </a>
+          <a href="#web-design" class="group">
+            <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2">
+              <span class="fa fa-code text-4xl text-primary mb-4 block"></span>
+              <h3 class="text-xl font-medium text-gray-800">网页设计</h3>
+            </div>
+          </a>
         </div>
         
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <a href="#about" class="text-white text-3xl">
-                <i class="fa fa-angle-down"></i>
-            </a>
+        <div class="text-gray-500 max-w-2xl mx-auto">
+          <p>五年的时间从一个设计小白到现在的初步了解，虽然距离大师还有很长的路要走，不过对于设计的热爱从未放弃过</p>
         </div>
+      </div>
     </section>
-
+    
     <!-- 关于我 -->
-    <section id="about" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">关于我</h2>
-                <div class="w-20 h-1 bg-primary mx-auto"></div>
+    <section id="about" class="py-20 bg-white overflow-hidden">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold text-blue-800 mb-4">关于我</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">UI设计专家，专注于通过视觉设计提升用户与产品的互动效率</p>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row gap-12 items-center relative">
+          <!-- 装饰元素 -->
+          <div class="absolute -top-20 -left-20 w-64 h-64 bg-blue-50 rounded-full -z-10"></div>
+          <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-100 rounded-full -z-10"></div>
+          
+          <div class="lg:w-1/4 relative">
+            <div class=" rounded-2xl overflow-hidden shadow-xl transform transition-transform duration-500 hover:scale-[1.02] max-h-[calc(100%-10px)]">
+              <video class="w-[100%] h-auto max-h-[calc(100%-10px)] object-cover mx-auto" src="./微信视频2025-06-28_161502_168.mp4" autoplay muted loop></video>
+            </div>
+            <div class="absolute -bottom-6 -right-6 w-40 h-40 bg-blue-100 rounded-full -z-10"></div>
+          </div>
+          
+          <div class="lg:w-3/5">
+            <div class="bg-blue-50 p-8 rounded-2xl mb-8 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <h3 class="text-2xl font-bold text-blue-800 mb-4">陈自成 | UI/UX设计师</h3>
+              <p class="text-gray-700 mb-6 leading-relaxed">来自河南信阳，专注于通过视觉设计提升用户与产品的互动效率。擅长用户需求分析、界面情感化设计转化为直观易用的解决方案，尤其在B端系统与APP设计领域拥有丰富经验。</p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow-sm flex items-center gap-3 transform transition-transform duration-300 hover:-translate-y-1">
+                  <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <span class="fa fa-line-chart"></span>
+                  </div>
+                  <span class="text-gray-700">用户留存率提升25%</span>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm flex items-center gap-3 transform transition-transform duration-300 hover:-translate-y-1">
+                  <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <span class="fa fa-exchange"></span>
+                  </div>
+                  <span class="text-gray-700">转化率增长30%</span>
+                </div>
+              </div>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="relative">
-                    <div class="absolute -top-4 -left-4 w-24 h-24 border-4 border-secondary rounded-lg z-0"></div>
-                    <div class="absolute -bottom-4 -right-4 w-24 h-24 border-4 border-primary rounded-lg z-0"></div>
-                    <img src="https://picsum.photos/id/64/600/600" alt="UI设计师照片" class="w-full h-auto rounded-lg shadow-xl relative z-10">
-                </div>
-                
-                <div>
-                    <h3 class="text-2xl font-semibold mb-4">UI/UX 设计师</h3>
-                    <p class="text-gray-700 mb-6 leading-relaxed">
-                        拥有5年专业UI/UX设计经验，专注于创造用户友好、视觉吸引力强的界面设计。我相信优秀的设计应该是美观与功能的完美结合。
-                    </p>
-                    <p class="text-gray-700 mb-6 leading-relaxed">
-                        我热衷于通过设计解决问题，关注细节，追求卓越。每个项目对我来说都是一次新的挑战和学习机会。
-                    </p>
-                    
-                    <div class="grid grid-cols-2 gap-6 mb-8">
-                        <div>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 用户界面设计</p>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 用户体验设计</p>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 交互设计</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 视觉设计</p>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 原型制作</p>
-                            <p class="text-gray-600 mb-2"><i class="fa fa-check text-primary mr-2"></i> 用户研究</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h4 class="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                  <span class="fa fa-wrench text-blue-600"></span>技术栈
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                  <li class="flex items-center gap-2"><span class="fa fa-check text-blue-600"></span>Figma/Sketch 高保真原型设计</li>
+                  <li class="flex items-center gap-2"><span class="fa fa-check text-blue-600"></span>AUXE 设计工具</li>
+                  <li class="flex items-center gap-2"><span class="fa fa-check text-blue-600"></span>Adobe PS/AI 视觉资产制作</li>
+                  <li class="flex items-center gap-2"><span class="fa fa-check text-blue-600"></span>AE 基础交互动效实现</li>
+                </ul>
+              </div>
+              
+              <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                <h4 class="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                  <span class="fa fa-sitemap text-blue-600"></span>设计流程
+                </h4>
+                <ol class="space-y-3 text-gray-700 list-decimal list-inside">
+                  <li>需求分析与用户研究</li>
+                  <li>原型设计与可用性测试</li>
+                  <li>视觉设计与开发标注</li>
+                  <li>效果追踪与迭代优化</li>
+                </ol>
+                <p class="mt-3 text-gray-700 italic">运用Design Sprint方法论压缩项目周期50%</p>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
-
+    
     <!-- 技能部分 -->
     <section id="skills" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">专业技能</h2>
-                <div class="w-20 h-1 bg-primary mx-auto"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-xl font-semibold mb-6">设计工具熟练度</h3>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Figma</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-primary h-2.5 rounded-full" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Adobe XD</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-primary h-2.5 rounded-full" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Sketch</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Adobe Photoshop</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="font-medium">Principle</span>
-                                <span>70%</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-primary h-2.5 rounded-full" style="width: 70%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-semibold mb-6">设计技能</h3>
-                    
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-primary text-3xl mb-4">
-                                <i class="fa fa-paint-brush"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold mb-2">视觉设计</h4>
-                            <p class="text-gray-600">创造美观、有吸引力的界面设计，注重色彩、排版和视觉层次。</p>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-primary text-3xl mb-4">
-                                <i class="fa fa-users"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold mb-2">用户研究</h4>
-                            <p class="text-gray-600">通过用户研究了解目标用户，创造符合用户需求的产品体验。</p>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-primary text-3xl mb-4">
-                                <i class="fa fa-hand-pointer-o"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold mb-2">交互设计</h4>
-                            <p class="text-gray-600">设计流畅、直观的交互体验，提升用户参与度和满意度。</p>
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                            <div class="text-primary text-3xl mb-4">
-                                <i class="fa fa-mobile"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold mb-2">移动设计</h4>
-                            <p class="text-gray-600">专注于创造优秀的移动应用体验，考虑各种设备和屏幕尺寸。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 技能图表 -->
-            <div class="mt-16">
-                <h3 class="text-xl font-semibold mb-6 text-center">设计能力雷达图</h3>
-                <div class="max-w-2xl mx-auto h-80">
-                    <canvas id="skillsChart"></canvas>
-                </div>
-            </div>
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">专业技能</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">我掌握的设计技能和工具，帮助客户创造卓越的产品体验</p>
         </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h3 class="text-xl font-bold mb-6">设计技能</h3>
+            
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="font-medium">UI/UX设计</span>
+                  <span>95%</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 95%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="font-medium">移动应用设计</span>
+                  <span>90%</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="font-medium">B端产品设计</span>
+                  <span>85%</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="font-medium">交互设计</span>
+                  <span>88%</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 88%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between mb-2">
+                  <span class="font-medium">用户研究</span>
+                  <span>80%</span>
+                </div>
+                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold mb-6">工具掌握</h3>
+            
+            <div class="grid grid-cols-2 gap-6">
+              <div class="bg-white p-6 rounded-xl hover-lift">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <span class="fa fa-pencil-square-o text-xl"></span>
+                  </div>
+                  <h4 class="font-bold">Figma</h4>
+                </div>
+                <p class="text-gray-600">专业UI/UX设计工具，支持团队协作和原型制作</p>
+              </div>
+              
+              <div class="bg-white p-6 rounded-xl hover-lift">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <span class="fa fa-paint-brush text-xl"></span>
+                  </div>
+                  <h4 class="font-bold">AUXE</h4>
+                </div>
+                <p class="text-gray-600">强大的设计和交互原型工具，适合跨平台协作</p>
+              </div>
+              
+              <div class="bg-white p-6 rounded-xl hover-lift">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <span class="fa fa-picture-o text-xl"></span>
+                  </div>
+                  <h4 class="font-bold">Photoshop</h4>
+                </div>
+                <p class="text-gray-600">图像处理和编辑的行业标准工具</p>
+              </div>
+              
+              <div class="bg-white p-6 rounded-xl hover-lift">
+                <div class="flex items-center gap-4 mb-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <span class="fa fa-object-group text-xl"></span>
+                  </div>
+                  <h4 class="font-bold">Illustrator</h4>
+                </div>
+                <p class="text-gray-600">专业矢量图形设计工具，适合品牌和图标设计</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-16">
+          <h3 class="text-xl font-bold mb-8 text-center">专业领域</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-8 rounded-xl hover-lift">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 mx-auto">
+                <span class="fa fa-desktop text-2xl"></span>
+              </div>
+              <h4 class="text-xl font-bold text-center mb-4">B端产品设计</h4>
+              <p class="text-gray-600 text-center">
+                设计高效、易用的企业级应用界面，提升工作效率和用户体验
+              </p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl hover-lift">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 mx-auto">
+                <span class="fa fa-mobile text-2xl"></span>
+              </div>
+              <h4 class="text-xl font-bold text-center mb-4">移动应用设计</h4>
+              <p class="text-gray-600 text-center">
+                打造直观、美观的移动应用界面，提供出色的用户体验
+              </p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-xl hover-lift">
+              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 mx-auto">
+                <span class="fa fa-paint-brush text-2xl"></span>
+              </div>
+              <h4 class="text-xl font-bold text-center mb-4">平面设计</h4>
+              <p class="text-gray-600 text-center">
+                创建有吸引力的视觉设计，包括品牌标识、宣传材料和插图
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
-
-    <!-- 作品集 -->
+    
+    <!-- 作品集部分 -->
     <section id="portfolio" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">作品集</h2>
-                <div class="w-20 h-1 bg-primary mx-auto"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
-                    以下是我近年来完成的一些设计项目，涵盖了各种不同类型的产品和服务
-                </p>
-            </div>
-            
-            <!-- 作品分类筛选 -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button class="portfolio-filter active px-6 py-2 rounded-full bg-primary text-white" data-filter="all">
-                    全部
-                </button>
-                <button class="portfolio-filter px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="app">
-                    应用设计
-                </button>
-                <button class="portfolio-filter px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="web">
-                    网站设计
-                </button>
-                <button class="portfolio-filter px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition-colors" data-filter="branding">
-                    品牌设计
-                </button>
-            </div>
-            
-            <!-- 作品展示 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-items">
-                <!-- 作品项1 -->
-                <div class="portfolio-item app" data-category="app">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/26/600/400" alt="金融应用界面设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">金融应用界面设计</h3>
-                            <p class="text-white/90 text-center mb-4">为金融科技公司设计的移动应用界面，提供账户管理、投资和支付功能</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 作品项2 -->
-                <div class="portfolio-item web" data-category="web">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/42/600/400" alt="电子商务网站设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">电子商务网站设计</h3>
-                            <p class="text-white/90 text-center mb-4">为时尚品牌设计的电子商务网站，具有现代感的UI和流畅的购物体验</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 作品项3 -->
-                <div class="portfolio-item branding" data-category="branding">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/96/600/400" alt="健康品牌设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">健康品牌设计</h3>
-                            <p class="text-white/90 text-center mb-4">为健康食品公司设计的品牌标识、包装和营销材料</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 作品项4 -->
-                <div class="portfolio-item app" data-category="app">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/160/600/400" alt="健身应用设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">健身应用设计</h3>
-                            <p class="text-white/90 text-center mb-4">为健身爱好者设计的移动应用，提供个性化训练计划和进度跟踪功能</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 作品项5 -->
-                <div class="portfolio-item web" data-category="web">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/201/600/400" alt="旅行网站设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">旅行网站设计</h3>
-                            <p class="text-white/90 text-center mb-4">为旅行社设计的网站，提供目的地探索、预订和旅行规划功能</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 作品项6 -->
-                <div class="portfolio-item branding" data-category="branding">
-                    <div class="group relative overflow-hidden rounded-lg shadow-lg">
-                        <img src="https://picsum.photos/id/3/600/400" alt="教育品牌设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-center items-center p-6">
-                            <h3 class="text-white text-xl font-semibold mb-2">教育品牌设计</h3>
-                            <p class="text-white/90 text-center mb-4">为在线教育平台设计的品牌标识、配色方案和UI组件库</p>
-                            <button class="view-project bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">作品集</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">精选我过去5年的代表性设计作品，展示我的设计能力和风格</p>
         </div>
+        
+        <!-- 作品分类 -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <button class="portfolio-filter bg-primary text-white px-6 py-2 rounded-full" data-filter="all">全部作品</button>
+          <button class="portfolio-filter bg-gray-200 hover:bg-primary hover:text-white px-6 py-2 rounded-full transition-colors" data-filter="b端设计">B端设计</button>
+          <button class="portfolio-filter bg-gray-200 hover:bg-primary hover:text-white px-6 py-2 rounded-full transition-colors" data-filter="app设计">App设计</button>
+          <button class="portfolio-filter bg-gray-200 hover:bg-primary hover:text-white px-6 py-2 rounded-full transition-colors" data-filter="平面设计">平面设计</button>
+        </div>
+        
+        <!-- 作品展示 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- B端设计作品 -->
+          <div class="portfolio-item group hover-lift" data-category="b端设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business1/600/400" alt="企业管理系统UI设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">企业管理系统UI设计</h4>
+                  <p class="text-white/90 mb-4">为科技公司设计的高效管理平台</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">企业管理系统UI设计</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="b端设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business2/600/400" alt="数据分析平台界面" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">数据分析平台界面</h4>
+                  <p class="text-white/90 mb-4">为金融机构设计的数据分析工具</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">数据分析平台界面</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <!-- App设计作品 -->
+          <div class="portfolio-item group hover-lift" data-category="app设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app1/600/400" alt="健康管理应用设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">健康管理应用设计</h4>
+                  <p class="text-white/90 mb-4">帮助用户跟踪健康数据的移动应用</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">健康管理应用设计</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="app设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app2/600/400" alt="电商购物应用界面" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">电商购物应用界面</h4>
+                  <p class="text-white/90 mb-4">为时尚品牌设计的购物体验</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">电商购物应用界面</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+          
+          <!-- 平面设计作品 -->
+          <div class="portfolio-item group hover-lift" data-category="平面设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/design1/600/400" alt="品牌视觉识别系统" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">品牌视觉识别系统</h4>
+                  <p class="text-white/90 mb-4">为初创公司设计的完整品牌标识</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">品牌视觉识别系统</h4>
+              <p class="text-gray-600">平面设计</p>
+            </div>
+          </div>
+          
+          <!-- 平面设计作品 -->
+          <div class="portfolio-item group hover-lift" data-category="平面设计">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/design2/600/400" alt="宣传海报设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">宣传海报设计</h4>
+                  <p class="text-white/90 mb-4">为音乐节设计的系列宣传海报</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">宣传海报设计</h4>
+              <p class="text-gray-600">平面设计</p>
+            </div>
+          </div>
+          
+          <!-- 新增作品项 -->
+          <div class="portfolio-item group hover-lift hidden" data-category="b端设计" id="extra-item-1">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business3/600/400" alt="项目管理工具界面" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">项目管理工具界面</h4>
+                  <p class="text-white/90 mb-4">为团队协作设计的项目管理系统</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">项目管理工具界面</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="app设计" id="extra-item-2">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app3/600/400" alt="旅行规划应用" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">旅行规划应用</h4>
+                  <p class="text-white/90 mb-4">帮助用户规划旅行行程的移动应用</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">旅行规划应用</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+          
+          <!-- 新增8个作品项 -->
+          <div class="portfolio-item group hover-lift" data-category="b端设计" id="extra-item-3">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business4/600/400" alt="客户关系管理系统" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">客户关系管理系统</h4>
+                  <p class="text-white/90 mb-4">企业级客户数据管理平台界面设计</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">客户关系管理系统</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="b端设计" id="extra-item-4">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business5/600/400" alt="人力资源管理平台" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">人力资源管理平台</h4>
+                  <p class="text-white/90 mb-4">员工信息与考勤管理系统界面</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">人力资源管理平台</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="app设计" id="extra-item-5">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app4/600/400" alt="音乐流媒体应用" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">音乐流媒体应用</h4>
+                  <p class="text-white/90 mb-4">个性化音乐推荐与播放界面</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">音乐流媒体应用</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="app设计" id="extra-item-6">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app5/600/400" alt="智能家居控制应用" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">智能家居控制应用</h4>
+                  <p class="text-white/90 mb-4">远程控制家居设备的移动应用</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">智能家居控制应用</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="平面设计" id="extra-item-7">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/design3/600/400" alt="包装设计系列" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">包装设计系列</h4>
+                  <p class="text-white/90 mb-4">有机食品品牌包装设计方案</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">包装设计系列</h4>
+              <p class="text-gray-600">平面设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="平面设计" id="extra-item-8">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/design4/600/400" alt="年度报告设计" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">年度报告设计</h4>
+                  <p class="text-white/90 mb-4">科技公司年度财务报告视觉设计</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">年度报告设计</h4>
+              <p class="text-gray-600">平面设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="b端设计" id="extra-item-9">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/business6/600/400" alt="供应链管理系统" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">供应链管理系统</h4>
+                  <p class="text-white/90 mb-4">物流与库存跟踪平台界面设计</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">供应链管理系统</h4>
+              <p class="text-gray-600">B端设计</p>
+            </div>
+          </div>
+          
+          <div class="portfolio-item group hover-lift" data-category="app设计" id="extra-item-10">
+            <div class="relative overflow-hidden rounded-xl">
+              <img src="https://picsum.photos/seed/app6/600/400" alt="教育学习平台" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div class="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="text-center p-4">
+                  <h4 class="text-white text-xl font-bold mb-2">教育学习平台</h4>
+                  <p class="text-white/90 mb-4">在线课程学习与管理应用</p>
+                  <a href="#" class="inline-block bg-white text-primary px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">查看详情</a>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-lg mb-2">教育学习平台</h4>
+              <p class="text-gray-600">App设计</p>
+            </div>
+          </div>
+        </div>
+        
+
+      </div>
     </section>
+    
+    <!-- 联系部分 -->
+    <section id="contact" class="py-20 bg-gray-50">
+      <div class="container mx-auto px-4 md:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-4">联系我</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">无论您是有项目合作，还是想了解更多关于我的服务，都可以随时联系我</p>
+        </div>
 
-    <!-- 设计流程 -->
-    <section id="process" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">我的设计流程</h2>
-                <div class="w-20 h-1 bg-primary mx-auto"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
-                    我遵循系统化的设计流程，确保每个项目都能得到全面的思考和精心的执行
-                </p>
+        <div class="md:w-full">
+          <div class="bg-white p-8 rounded-xl shadow-lg flex flex-col md:flex-row gap-8">
+            <!-- 个人写真图片 -->
+            <div class="md:w-1/3">
+              <img src="./douba.jpg" alt="个人写真" class="rounded-lg object-cover w-full h-auto shadow-md">
             </div>
             
-            <div class="relative">
-                <!-- 流程步骤线 -->
-                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-gray-200 transform -translate-x-1/2"></div>
-                
-                <!-- 流程步骤1 -->
-                <div class="relative z-10 flex flex-col md:flex-row items-center mb-16">
-                    <div class="md:w-1/2 md:pr-12 md:text-right mb-8 md:mb-0">
-                        <h3 class="text-2xl font-semibold mb-4">需求理解</h3>
-                        <p class="text-gray-600">
-                            首先深入了解项目背景、目标和需求，与客户沟通，明确项目的愿景和期望。通过访谈和调研，收集必要的信息。
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white text-2xl font-bold mb-8 md:mb-0">
-                        1
-                    </div>
-                    <div class="md:w-1/2 md:pl-12">
-                        <img src="https://picsum.photos/id/180/600/400" alt="需求理解" class="rounded-lg shadow-lg w-full h-auto">
-                    </div>
+            <!-- 联系信息 -->
+            <div class="md:w-2/3">
+              <h3 class="text-2xl font-bold mb-6">联系方式</h3>
+
+              <div class="space-y-6 mb-8">
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                    <span class="fa fa-envelope"></span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg mb-1">电子邮箱</h4>
+                    <p class="text-gray-600">18506108895@163.com</p>
+                  </div>
                 </div>
-                
-                <!-- 流程步骤2 -->
-                <div class="relative z-10 flex flex-col md:flex-row-reverse items-center mb-16">
-                    <div class="md:w-1/2 md:pl-12 md:text-left mb-8 md:mb-0">
-                        <h3 class="text-2xl font-semibold mb-4">研究分析</h3>
-                        <p class="text-gray-600">
-                            进行市场研究和竞品分析，了解行业趋势和用户需求。创建用户画像和用户旅程地图，帮助理解用户行为和痛点。
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white text-2xl font-bold mb-8 md:mb-0">
-                        2
-                    </div>
-                    <div class="md:w-1/2 md:pr-12">
-                        <img src="https://picsum.photos/id/175/600/400" alt="研究分析" class="rounded-lg shadow-lg w-full h-auto">
-                    </div>
+
+                <div class="flex items-start gap-4">
+                  <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                    <span class="fa fa-phone"></span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg mb-1">电话</h4>
+                    <p class="text-gray-600">18506108895</p>
+                  </div>
                 </div>
-                
-                <!-- 流程步骤3 -->
-                <div class="relative z-10 flex flex-col md:flex-row items-center mb-16">
-                    <div class="md:w-1/2 md:pr-12 md:text-right mb-8 md:mb-0">
-                        <h3 class="text-2xl font-semibold mb-4">设计规划</h3>
-                        <p class="text-gray-600">
-                            创建信息架构和用户流程，设计线框图和原型。这个阶段注重功能布局和用户体验流程，确保产品逻辑清晰。
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white text-2xl font-bold mb-8 md:mb-0">
-                        3
-                    </div>
-                    <div class="md:w-1/2 md:pl-12">
-                        <img src="https://picsum.photos/id/1/600/400" alt="设计规划" class="rounded-lg shadow-lg w-full h-auto">
-                    </div>
+              </div>
+
+              <div>
+                <h3 class="text-2xl font-bold mb-6">社交媒体</h3>
+                <div class="flex items-center gap-6">
+                  <a href="#" class="text-gray-500 hover:text-primary transition-colors">
+                    <span class="fa fa-behance-square text-2xl"></span>
+                  </a>
+                  <a href="#" class="text-gray-500 hover:text-primary transition-colors">
+                    <span class="fa fa-dribbble text-2xl"></span>
+                  </a>
+                  <a href="#" class="text-gray-500 hover:text-primary transition-colors">
+                    <span class="fa fa-linkedin-square text-2xl"></span>
+                  </a>
+                  <a href="#" class="text-gray-500 hover:text-primary transition-colors">
+                    <span class="fa fa-instagram text-2xl"></span>
+                  </a>
                 </div>
-                
-                <!-- 流程步骤4 -->
-                <div class="relative z-10 flex flex-col md:flex-row-reverse items-center">
-                    <div class="md:w-1/2 md:pl-12 md:text-left mb-8 md:mb-0">
-                        <h3 class="text-2xl font-semibold mb-4">视觉设计与实现</h3>
-                        <p class="text-gray-600">
-                            根据品牌风格和用户偏好，设计视觉界面。创建UI组件和设计系统，确保设计一致性。最后进行前端开发实现，将设计转化为可用的产品。
-                        </p>
-                    </div>
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary text-white text-2xl font-bold mb-8 md:mb-0">
-                        4
-                    </div>
-                    <div class="md:w-1/2 md:pr-12">
-                        <img src="https://picsum.photos/id/30/600/400" alt="视觉设计与实现" class="rounded-lg shadow-lg w-full h-auto">
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
+  </main>
 
-    <!-- 客户评价 -->
-    <section id="testimonials" class="py-20 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">客户评价</h2>
-                <div class="w-20 h-1 bg-primary mx-auto"></div>
-                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
-                    听听我的客户对合作体验和最终成果的评价
-                </p>
-            </div>
-            
-            <div class="testimonials-slider relative overflow-hidden">
-                <div class="testimonials-wrapper flex transition-transform duration-500">
-                    <!-- 评价1 -->
-                    <div class="testimonial-item min-w-full md:min-w-[33.333%] p-4">
-                        <div class="bg-gray-50 p-8 rounded-lg shadow-md h-full">
-                            <div class="flex items-center mb-6">
-                                <div class="text-yellow-400 flex">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 italic mb-6">
-                                "与这位设计师合作是一次非常愉快的经历。她不仅理解我们的需求，还能提供超出预期的创意解决方案。最终的设计既美观又实用，为我们的产品带来了显著的用户体验提升。"
-                            </p>
-                            <div class="flex items-center">
-                                <img src="https://picsum.photos/id/1005/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-semibold">张小明</h4>
-                                    <p class="text-gray-600 text-sm">科技公司产品经理</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 评价2 -->
-                    <div class="testimonial-item min-w-full md:min-w-[33.333%] p-4">
-                        <div class="bg-gray-50 p-8 rounded-lg shadow-md h-full">
-                            <div class="flex items-center mb-6">
-                                <div class="text-yellow-400 flex">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 italic mb-6">
-                                "设计师的专业水平和创造力给我们留下了深刻的印象。她能够快速理解我们的品牌定位，并将其转化为令人惊艳的视觉设计。整个过程中沟通顺畅，交付准时，我们非常满意。"
-                            </p>
-                            <div class="flex items-center">
-                                <img src="https://picsum.photos/id/1012/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-semibold">李晓华</h4>
-                                    <p class="text-gray-600 text-sm">时尚品牌创始人</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 评价3 -->
-                    <div class="testimonial-item min-w-full md:min-w-[33.333%] p-4">
-                        <div class="bg-gray-50 p-8 rounded-lg shadow-md h-full">
-                            <div class="flex items-center mb-6">
-                                <div class="text-yellow-400 flex">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 italic mb-6">
-                                "我们公司多次与这位设计师合作，每次都能得到出色的结果。她对细节的关注和用户体验的理解使我们的产品在市场上脱颖而出。强烈推荐给任何需要高质量UI设计的团队！"
-                            </p>
-                            <div class="flex items-center">
-                                <img src="https://picsum.photos/id/1025/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-semibold">王建国</h4>
-                                    <p class="text-gray-600 text-sm">互联网公司CEO</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 评价4 -->
-                    <div class="testimonial-item min-w-full md:min-w-[33.333%] p-4">
-                        <div class="bg-gray-50 p-8 rounded-lg shadow-md h-full">
-                            <div class="flex items-center mb-6">
-                                <div class="text-yellow-400 flex">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                            </div>
-                            <p class="text-gray-700 italic mb-6">
-                                "设计师为我们创建的移动应用界面简洁直观，用户反馈非常积极。她的设计不仅美观，而且非常实用，真正解决了我们的用户痛点。整个项目过程中，她非常专业且善于沟通。"
-                            </p>
-                            <div class="flex items-center">
-                                <img src="https://picsum.photos/id/1027/100/100" alt="客户头像" class="w-12 h-12 rounded-full object-cover mr-4">
-                                <div>
-                                    <h4 class="font-semibold">陈美玲</h4>
-                                    <p class="text-gray-600 text-sm">创业公司联合创始人</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 滑动控制按钮 -->
-                <button class="testimonial-prev absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg z-10">
-                    <i class="fa fa-angle-left"></i>
-                </button>
-                <button class="testimonial-next absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg z-10">
-                    <i class="fa fa-angle-right"></i>
-                </button>
-                
-                <!-- 指示器 -->
-                <div class="flex justify-center mt-8 space-x-2" id="testimonial-indicators">
-                    <button class="w-3 h-3 rounded-full bg-primary" data-index="0"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300" data-index="1"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300" data-index="2"></button>
-                    <button class="w-3 h-3 rounded-full bg-gray-300" data-index="3"></button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="bg-dark text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold mb-4">感谢您的访问</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">
-                    我期待与您合作，共同创造出色的设计作品
-                </p>
-            </div>
-            
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors text-2xl">
-                    <i class="fa fa-behance"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors text-2xl">
-                    <i class="fa fa-dribbble"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors text-2xl">
-                    <i class="fa fa-instagram"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors text-2xl">
-                    <i class="fa fa-linkedin"></i>
-                </a>
-            </div>
-            
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 UI设计师作品集. 保留所有权利.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- 作品详情模态框 -->
-    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto m-4 transform scale-95 transition-transform duration-300">
-            <div class="p-6">
-                <div class="flex justify-between items-start mb-6">
-                    <h3 class="text-2xl font-semibold" id="modal-title">项目详情</h3>
-                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                
-                <div id="modal-content">
-                    <!-- 项目详情将通过JavaScript动态填充 -->
-                </div>
-            </div>
-        </div>
+  <!-- 页脚 -->
+  <footer class="bg-gray-900 text-white py-12 w-full">
+   <div class="container mx-auto px-4">
+     <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+       <div class="mb-6 md:mb-0">
+         <a href="#" class="text-2xl font-bold flex items-center gap-2 text-white">
+           <span class="fa fa-paint-brush text-blue-400"></span>
+           <span>陈自成设计</span>
+         </a>
+         <p class="text-gray-400 mt-2 max-w-md">
+           专注于创造有影响力的UI/UX设计
+         </p>
+       </div>
+       
+       <div class="w-full md:w-auto">
+         <ul class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">
+           <li class="flex items-center gap-2">
+             <span class="fa fa-envelope text-blue-400"></span>
+             <a href="mailto:18506108895@163.com" class="text-gray-400 hover:text-white transition-colors">18506108895@163.com</a>
+           </li>
+           <li class="flex items-center gap-2">
+             <span class="fa fa-phone text-blue-400"></span>
+             <a href="tel:18506108895" class="text-gray-400 hover:text-white transition-colors">18506108895</a>
+           </li>
+           <li class="flex items-center gap-2">
+             <span class="fa fa-map-marker text-blue-400"></span>
+             <span class="text-gray-400">嘉兴数字小镇</span>
+           </li>
+         </ul>
+       </div>
+     </div>
+   
+     <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-gray-400">© 2025 陈自成设计. 保留所有权利.</p>
+      
+      <div class="flex items-center gap-6 mt-4 md:mt-0">
+        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors group">
+          <span class="fa fa-behance-square text-2xl group-hover:scale-110 transition-transform"></span>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors group">
+          <span class="fa fa-dribbble text-2xl group-hover:scale-110 transition-transform"></span>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors group">
+          <span class="fa fa-linkedin-square text-2xl group-hover:scale-110 transition-transform"></span>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors group">
+          <span class="fa fa-instagram text-2xl group-hover:scale-110 transition-transform"></span>
+        </a>
+      </div>
     </div>
+  </div>
+</footer>
 
-    <script>
-        // 导航栏滚动效果
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-dark/90', 'shadow-lg');
-                navbar.classList.remove('bg-transparent');
-            } else {
-                navbar.classList.remove('bg-dark/90', 'shadow-lg');
-                navbar.classList.add('bg-transparent');
-            }
-        });
+  <!-- JavaScript -->
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-white', 'shadow-md');
+        navbar.classList.remove('py-4');
+        navbar.classList.add('py-2');
+      } else {
+        navbar.classList.remove('bg-white', 'shadow-md');
+        navbar.classList.remove('py-2');
+        navbar.classList.add('py-4');
+      }
+    });
+    
+    // 移动端菜单切换
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
         
-        // 移动端菜单
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
         
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            menuToggle.innerHTML = mobileMenu.classList.contains('hidden') 
-                ? '<i class="fa fa-bars"></i>' 
-                : '<i class="fa fa-times"></i>';
-        });
-        
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                // 关闭移动菜单（如果打开）
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                    menuToggle.innerHTML = '<i class="fa fa-bars"></i>';
-                }
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // 技能图表
-        const ctx = document.getElementById('skillsChart').getContext('2d');
-        const skillsChart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: ['视觉设计', '用户体验', '交互设计', '移动设计', '响应式设计', '品牌设计'],
-                datasets: [{
-                    label: '技能水平',
-                    data: [90, 85, 88, 82, 78, 87],
-                    backgroundColor: 'rgba(22, 93, 255, 0.2)',
-                    borderColor: 'rgba(22, 93, 255, 1)',
-                    pointBackgroundColor: 'rgba(22, 93, 255, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(22, 93, 255, 1)'
-                }]
-            },
-            options: {
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true
-                        },
-                        suggestedMin: 50,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
-        
-        // 作品集筛选
-        const filterButtons = document.querySelectorAll('.portfolio-filter');
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-        
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // 更新按钮状态
-                filterButtons.forEach(btn => {
-                    btn.classList.remove('active', 'bg-primary', 'text-white');
-                    btn.classList.add('bg-gray-200', 'hover:bg-gray-300');
-                });
-                button.classList.add('active', 'bg-primary', 'text-white');
-                button.classList.remove('bg-gray-200', 'hover:bg-gray-300');
-                
-                const filter = button.getAttribute('data-filter');
-                
-                // 筛选作品
-                portfolioItems.forEach(item => {
-                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-        
-        // 作品详情模态框
-        const projectModal = document.getElementById('project-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalContent = document.getElementById('modal-content');
-        const closeModal = document.getElementById('close-modal');
-        const viewProjectButtons = document.querySelectorAll('.view-project');
-        
-        // 项目数据
-        const projectData = {
-            '金融应用界面设计': {
-                description: '为金融科技公司设计的移动应用界面，提供账户管理、投资和支付功能。设计注重用户体验和安全性，采用了蓝色作为主色调，传达信任和专业感。',
-                technologies: ['Figma', 'Adobe XD', 'Principle'],
-                images: [
-                    'https://picsum.photos/id/26/800/600',
-                    'https://picsum.photos/id/48/800/600',
-                    'https://picsum.photos/id/60/800/600'
-                ]
-            },
-            '电子商务网站设计': {
-                description: '为时尚品牌设计的电子商务网站，具有现代感的UI和流畅的购物体验。设计采用了简约的布局和明亮的色彩，突出产品展示。网站包含产品浏览、购物车、结账和用户账户管理等功能。',
-                technologies: ['Figma', 'HTML', 'CSS', 'JavaScript'],
-                images: [
-                    'https://picsum.photos/id/42/800/600',
-                    'https://picsum.photos/id/49/800/600',
-                    'https://picsum.photos/id/50/800/600'
-                ]
-            },
-            '健康品牌设计': {
-                description: '为健康食品公司设计的品牌标识、包装和营销材料。设计采用了绿色作为主色调，传达健康和自然的感觉。品牌标识简洁易记，包装设计注重功能性和环保性。',
-                technologies: ['Sketch', 'Adobe Illustrator', 'Adobe Photoshop'],
-                images: [
-                    'https://picsum.photos/id/96/800/600',
-                    'https://picsum.photos/id/21/800/600',
-                    'https://picsum.photos/id/22/800/600'
-                ]
-            },
-            '健身应用设计': {
-                description: '为健身爱好者设计的移动应用，提供个性化训练计划和进度跟踪功能。设计采用了充满活力的橙色作为主色调，配合蓝色作为辅助色。应用包含锻炼计划、营养建议、进度图表和社区功能。',
-                technologies: ['Figma', 'Adobe XD', 'Principle'],
-                images: [
-                    'https://picsum.photos/id/160/800/600',
-                    'https://picsum.photos/id/174/800/600',
-                    'https://picsum.photos/id/177/800/600'
-                ]
-            },
-            '旅行网站设计': {
-                description: '为旅行社设计的网站，提供目的地探索、预订和旅行规划功能。设计采用了清新的蓝色和绿色调色板，配合高质量的风景图片，营造出向往旅行的氛围。网站具有响应式设计，可在各种设备上提供良好的体验。',
-                technologies: ['Figma', 'HTML', 'CSS', 'JavaScript'],
-                images: [
-                    'https://picsum.photos/id/201/800/600',
-                    'https://picsum.photos/id/283/800/600',
-                    'https://picsum.photos/id/287/800/600'
-                ]
-            },
-            '教育品牌设计': {
-                description: '为在线教育平台设计的品牌标识、配色方案和UI组件库。设计采用了蓝色作为主色调，传达信任和专业性，配合橙色作为辅助色，增添活力。品牌标识简洁现代，UI组件库确保了整个平台的设计一致性。',
-                technologies: ['Sketch', 'Adobe Illustrator', 'Figma'],
-                images: [
-                    'https://picsum.photos/id/3/800/600',
-                    'https://picsum.photos/id/20/800/600',
-                    'https://picsum.photos/id/24/800/600'
-                ]
-            }
-        };
-        
-        // 打开模态框
-        viewProjectButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const projectName = button.closest('.portfolio-item').querySelector('h3').textContent;
-                const project = projectData[projectName];
-                
-                if (project) {
-                    modalTitle.textContent = projectName;
-                    
-                    let content = `
-                        <div class="mb-6">
-                            <p class="text-gray-700 mb-4">${project.description}</p>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                ${project.technologies.map(tech => `<span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">${tech}</span>`).join('')}
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            ${project.images.map(img => `<img src="${img}" alt="${projectName}" class="w-full h-auto rounded-lg shadow-md">`).join('')}
-                        </div>
-                    `;
-                    
-                    modalContent.innerHTML = content;
-                    
-                    // 显示模态框
-                    projectModal.classList.remove('opacity-0', 'pointer-events-none');
-                    projectModal.querySelector('div').classList.remove('scale-95');
-                    projectModal.querySelector('div').classList.add('scale-100');
-                    document.body.style.overflow = 'hidden';
-                }
-            });
-        });
-        
-        // 关闭模态框
-        closeModal.addEventListener('click', () => {
-            projectModal.classList.add('opacity-0', 'pointer-events-none');
-            projectModal.querySelector('div').classList.remove('scale-100');
-            projectModal.querySelector('div').classList.add('scale-95');
-            document.body.style.overflow = '';
-        });
-        
-        // 点击模态框外部关闭
-        projectModal.addEventListener('click', (e) => {
-            if (e.target === projectModal) {
-                closeModal.click();
-            }
-        });
-        
-        // 客户评价滑块
-        const testimonialWrapper = document.querySelector('.testimonials-wrapper');
-        const testimonialItems = document.querySelectorAll('.testimonial-item');
-        const prevButton = document.querySelector('.testimonial-prev');
-        const nextButton = document.querySelector('.testimonial-next');
-        const indicators = document.querySelectorAll('#testimonial-indicators button');
-        
-        let currentIndex = 0;
-        const itemWidth = 100; // 百分比
-        const itemsPerView = window.innerWidth >= 768 ? 3 : 1;
-        
-        // 更新滑块位置
-        function updateSlider() {
-            const translateValue = -currentIndex * (itemWidth / itemsPerView);
-            testimonialWrapper.style.transform = `translateX(${translateValue}%)`;
-            
-            // 更新指示器
-            indicators.forEach((indicator, index) => {
-                if (index === currentIndex) {
-                    indicator.classList.add('bg-primary');
-                    indicator.classList.remove('bg-gray-300');
-                } else {
-                    indicator.classList.remove('bg-primary');
-                    indicator.classList.add('bg-gray-300');
-                }
-            });
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // 关闭移动菜单
+          if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+          }
         }
+      });
+    });
+    
+    // 滚动时元素淡入效果
+    const fadeElements = document.querySelectorAll('.hover-lift');
+    
+    const fadeInOnScroll = () => {
+      fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
         
-        // 下一个评价
-        nextButton.addEventListener('click', () => {
-            const maxIndex = testimonialItems.length - itemsPerView;
-            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-            updateSlider();
-        });
-        
-        // 上一个评价
-        prevButton.addEventListener('click', () => {
-            const maxIndex = testimonialItems.length - itemsPerView;
-            currentIndex = currentIndex <= 0 ? maxIndex : currentIndex - 1;
-            updateSlider();
-        });
-        
-        // 点击指示器
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                currentIndex = index;
-                updateSlider();
-            });
-        });
-        
-        // 自动轮播
-        let sliderInterval = setInterval(() => {
-            const maxIndex = testimonialItems.length - itemsPerView;
-            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-            updateSlider();
-        }, 5000);
-        
-        // 鼠标悬停暂停轮播
-        testimonialWrapper.addEventListener('mouseenter', () => {
-            clearInterval(sliderInterval);
-        });
-        
-        // 鼠标离开继续轮播
-        testimonialWrapper.addEventListener('mouseleave', () => {
-            sliderInterval = setInterval(() => {
-                const maxIndex = testimonialItems.length - itemsPerView;
-                currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
-                updateSlider();
-            }, 5000);
-        });
-        
-        // 响应式处理
-        window.addEventListener('resize', () => {
-            const newItemsPerView = window.innerWidth >= 768 ? 3 : 1;
-            if (newItemsPerView !== itemsPerView) {
-                currentIndex = 0;
-                updateSlider();
+        if (elementTop < windowHeight * 0.9) {
+          element.classList.add('fade-in');
+        }
+      });
+    };
+    
+    // 初始加载时检查元素
+    fadeInOnScroll();
+    
+    // 滚动时检查元素
+    window.addEventListener('scroll', fadeInOnScroll);
+  </script>
+</body>
+</html>
+  
+    <script>
+      // 分类筛选功能
+      const categoryBtns = document.querySelectorAll('.category-btn');
+      const portfolioItems = document.querySelectorAll('.portfolio-item');
+      const viewMoreBtn = document.getElementById('view-more-btn');
+      const extraItems = document.querySelectorAll('[id^="extra-item-"]');
+      let isExpanded = false;
+      
+      categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 移除所有按钮的活跃状态
+          categoryBtns.forEach(b => b.classList.remove('active'));
+          // 添加当前按钮的活跃状态
+          btn.classList.add('active');
+          
+          const category = btn.getAttribute('data-category');
+          
+          // 重置展开状态
+          isExpanded = false;
+          viewMoreBtn.textContent = '查看更多作品';
+          
+          // 根据分类筛选作品
+          portfolioItems.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            if (category === 'all' || itemCategory === category) {
+              item.classList.remove('hidden');
+              // 仅在全部分类下隐藏额外作品
+              if (category === 'all' && item.id && item.id.startsWith('extra-item-')) {
+                item.classList.add('hidden');
+              }
+            } else {
+              item.classList.add('hidden');
             }
+          });
+          
+          // 控制查看更多按钮显示
+          if (category === 'all') {
+            viewMoreBtn.classList.remove('hidden');
+          } else {
+            viewMoreBtn.classList.add('hidden');
+          }
         });
+      });
+      
+      // 查看更多作品功能
+      viewMoreBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        
+        extraItems.forEach(item => {
+          if (isExpanded) {
+            item.classList.remove('hidden');
+            viewMoreBtn.textContent = '收起作品';
+          } else {
+            item.classList.add('hidden');
+            viewMoreBtn.textContent = '查看更多作品';
+          }
+        });
+      });
     </script>
 </body>
 </html>
-    
+  
+          <span class="text-black">ZICheng chen</span>
+  
