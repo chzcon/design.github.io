@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
@@ -209,7 +209,7 @@
     }
 
     .hero {
-      height: 204px;
+      height: 460px;
       background:
         radial-gradient(circle at 38% 15%, rgba(142, 185, 255, .72) 0 1px, transparent 2px),
         radial-gradient(circle at 72% 45%, rgba(255,255,255,.8) 0 1px, transparent 2px),
@@ -219,6 +219,12 @@
       position: relative;
     }
 
+    .hero.has-custom-bg {
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
     .hero::after {
       content: "";
       position: absolute;
@@ -226,6 +232,34 @@
       background:
         linear-gradient(110deg, transparent 0 55%, rgba(255,255,255,.08) 56% 60%, transparent 61%),
         radial-gradient(circle at 44% 22%, rgba(255,255,255,.18), transparent 11%);
+    }
+
+    .hero.has-custom-bg::after {
+      background: linear-gradient(180deg, rgba(12, 18, 32, .08), rgba(12, 18, 32, .14));
+    }
+
+    .cover-upload-btn {
+      position: absolute;
+      right: 28px;
+      bottom: 22px;
+      z-index: 1;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 4px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #fff;
+      background: rgba(15, 23, 42, .42);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .cover-upload-btn input {
+      display: none;
     }
 
     .content {
@@ -896,6 +930,40 @@
       cursor: pointer;
     }
 
+
+    .upload-combo {
+      border: 1px solid #cfd7e3;
+      border-radius: 8px;
+      min-height: 50px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: #fff;
+    }
+
+    .upload-combo input {
+      display: none;
+    }
+
+    .upload-action {
+      height: 32px;
+      border: 1px solid #aeb7c5;
+      border-radius: 4px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      color: #1f365c;
+      background: #f8fafc;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .upload-summary {
+      color: #536174;
+      font-size: 14px;
+    }
     .file-note {
       color: #68717d;
       font-size: 12px;
@@ -1386,7 +1454,11 @@
         </div>
       </header>
 
-      <section class="hero" aria-label="页面封面"></section>
+      <section class="hero" id="heroCover" aria-label="页面封面">
+        <label class="cover-upload-btn" for="coverImageInput">上传背景
+          <input id="coverImageInput" type="file" accept="image/*" />
+        </label>
+      </section>
 
       <section class="content">
         <div class="page-icon" id="pageIcon">🔑</div>
@@ -1496,9 +1568,13 @@
           </label>
         </div>
         <div class="field" id="fileField">
-          <label for="fileInput">上传文件</label>
-          <input id="fileInput" type="file" accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.xlsx,.xls,.doc,.docx,.pdf" />
-          <div class="file-note" id="fileNote">支持文档、Excel、Markdown、文本、CSV、PDF 等。上传文件会保存在当前浏览器本地。</div>
+          <label>上传文件 / 文件夹</label>
+          <div class="upload-combo">
+            <label class="upload-action" for="fileInput">选择文件</label>
+            <input id="fileInput" type="file" multiple webkitdirectory directory accept=".txt,.md,.markdown,.csv,.json,.html,.css,.js,.xml,.zip,.rar,.7z,.xlsx,.xls,.doc,.docx,.pdf,.jpg,.jpeg,.jpe,.png,.gif,.webp,image/*" />
+            <span class="upload-summary" id="uploadSummary">未选择文件</span>
+          </div>
+          <div class="file-note" id="fileNote">支持文档、zip、文件夹、Word、Excel、Markdown、PDF、JPEG、PNG、JPE 等。上传内容会保存在当前浏览器本地。</div>
         </div>
         <div class="form-actions">
           <button class="ghost-btn" id="cancelBtn" type="button">取消</button>
@@ -1661,8 +1737,11 @@
     let activeTab = "全部";
     let taskBoardMode = "status";
     let taskFilters = {};
+    let pageCovers = loadPageCovers();
 
     const sidebar = document.querySelector(".sidebar");
+    const heroCover = document.querySelector("#heroCover");
+    const coverImageInput = document.querySelector("#coverImageInput");
     const cards = document.querySelector("#cards");
     const recordList = document.querySelector("#recordList");
     const tabs = document.querySelector("#tabs");
@@ -1681,6 +1760,7 @@
     const remarkInput = document.querySelector("#remarkInput");
     const fileField = document.querySelector("#fileField");
     const fileInput = document.querySelector("#fileInput");
+    const uploadSummary = document.querySelector("#uploadSummary");
     const fileNote = document.querySelector("#fileNote");
     const iconImageInput = document.querySelector("#iconImageInput");
     const categoryInput = document.querySelector("#categoryInput");
@@ -1746,6 +1826,7 @@
     });
     titleInput.addEventListener("input", updatePreview);
     urlInput.addEventListener("input", updatePreview);
+    coverImageInput.addEventListener("change", updateCoverImage);
     fileInput.addEventListener("change", updateFileNote);
     iconImageInput.addEventListener("change", updateIconImagePreview);
     taskSearchInput?.addEventListener("input", renderTodoBoard);
@@ -1833,8 +1914,7 @@
       if (!title || !category) return;
       ensurePageCategory(category);
       const canUploadFile = canUseFileUpload();
-      const selectedFile = canUploadFile ? fileInput.files[0] : null;
-      const attachment = selectedFile ? await fileToAttachment(selectedFile) : undefined;
+      const attachment = canUploadFile ? await selectedAttachment() : undefined;
 
       if (editingId) {
         items = items.map(item => item.id === editingId ? { ...item, title, url, account, password, remark, category, iconImage, ...(attachment ? { attachment } : {}) } : item);
@@ -2075,6 +2155,40 @@
       clearPreciseBtn.classList.toggle("show", Boolean(preciseSearchInput.value.trim()));
     }
 
+    function loadPageCovers() {
+      return JSON.parse(localStorage.getItem("personal-ui-page-covers") || "{}");
+    }
+
+    function savePageCovers() {
+      localStorage.setItem("personal-ui-page-covers", JSON.stringify(pageCovers));
+    }
+
+    function renderHeroCover() {
+      const cover = pageCovers[currentPageId];
+      if (cover) {
+        heroCover.classList.add("has-custom-bg");
+        heroCover.style.backgroundImage = `url("${cover}")`;
+      } else {
+        heroCover.classList.remove("has-custom-bg");
+        heroCover.style.backgroundImage = "";
+      }
+    }
+
+    async function updateCoverImage() {
+      const file = coverImageInput.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        coverImageInput.value = "";
+        showToast("请选择图片文件");
+        return;
+      }
+      pageCovers[currentPageId] = await readFile(file, "data");
+      savePageCovers();
+      coverImageInput.value = "";
+      renderHeroCover();
+      showToast("背景图已更新");
+    }
+
     function renderPage() {
       const page = currentPage();
       const isTodo = currentPageType() === "todo";
@@ -2085,6 +2199,7 @@
       document.querySelector("#pageDesc").textContent = desc;
       document.querySelector("#crumbIcon").textContent = page.icon;
       document.querySelector("#crumbTitle").textContent = isTodo ? "每日待办" : page.title;
+      renderHeroCover();
     }
 
     function renderSidebar() {
@@ -2591,6 +2706,27 @@
       return Boolean(page && (page.custom || page.section === "custom"));
     }
 
+    async function selectedAttachment() {
+      const files = [...fileInput.files];
+      const isFolder = files.some(file => file.webkitRelativePath);
+      if (!files.length) return undefined;
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      if (totalSize > 12 * 1024 * 1024) {
+        alert("上传内容较大，可能会占用较多浏览器本地存储空间。");
+      }
+      if (files.length === 1 && !isFolder) return await fileToAttachment(files[0]);
+      const savedFiles = await Promise.all(files.map(fileToAttachment));
+      const folderName = isFolder ? (files[0].webkitRelativePath || "文件夹").split("/")[0] : `${files.length} 个文件`;
+      return {
+        name: folderName,
+        type: isFolder ? "文件夹" : "文件包",
+        size: totalSize,
+        lastModified: Math.max(...files.map(file => file.lastModified || 0)),
+        isBundle: true,
+        files: savedFiles
+      };
+    }
+
     async function fileToAttachment(file) {
       if (file.size > 4 * 1024 * 1024) {
         alert("单个文件建议不超过 4MB，避免浏览器本地保存空间不足。");
@@ -2602,6 +2738,7 @@
         type: file.type || fileTypeFromName(file.name),
         size: file.size,
         lastModified: file.lastModified,
+        path: file.webkitRelativePath || file.name,
         dataUrl,
         text
       };
@@ -2618,11 +2755,18 @@
     }
 
     function updateFileNote() {
-      const file = fileInput.files[0];
-      if (file) {
-        fileNote.textContent = `已选择：${file.name}，大小 ${formatFileSize(file.size)}。保存后可在详情中查看和下载。`;
+      const files = [...fileInput.files];
+      if (files.length) {
+        const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+        const isFolder = files.some(file => file.webkitRelativePath);
+        const folderName = isFolder ? (files[0].webkitRelativePath || "文件夹").split("/")[0] : "";
+        uploadSummary.textContent = isFolder ? folderName : (files.length === 1 ? files[0].name : `${files.length} 个文件`);
+        fileNote.textContent = isFolder
+          ? `已选择文件夹：${folderName}，共 ${files.length} 个文件，大小 ${formatFileSize(totalSize)}。保存后可在详情中查看和下载。`
+          : `已选择：${files.length === 1 ? files[0].name : `${files.length} 个文件`}，大小 ${formatFileSize(totalSize)}。保存后可在详情中查看和下载。`;
       } else {
-        fileNote.textContent = "支持文档、Excel、Markdown、文本、CSV、PDF 等。上传文件会保存在当前浏览器本地。";
+        uploadSummary.textContent = "未选择文件";
+        fileNote.textContent = "支持文档、zip、文件夹、Word、Excel、Markdown、PDF、JPEG、PNG、JPE 等。上传内容会保存在当前浏览器本地。";
       }
     }
 
@@ -2667,6 +2811,10 @@
     }
 
     async function renderAttachmentPreview(attachment) {
+      if (attachment.isBundle && Array.isArray(attachment.files)) {
+        const rows = attachment.files.map((file, index) => `${index + 1}. ${file.path || file.name} · ${formatFileSize(file.size)}`).join("\n");
+        return `<pre>${escapeHtml(attachment.type || "文件包")}：${escapeHtml(attachment.name)}\n共 ${attachment.files.length} 个文件，大小 ${formatFileSize(attachment.size)}。\n\n${escapeHtml(rows)}\n\n点击“下载文件”会依次下载全部文件。</pre>`;
+      }
       const name = attachment.name.toLowerCase();
       if (attachment.text && (name.endsWith(".md") || name.endsWith(".markdown"))) {
         return `<pre>${escapeHtml(attachment.text)}</pre>`;
@@ -2694,6 +2842,9 @@
           return `<pre>暂时无法解析这个 Word 文件，但文件已保存，可以点击“下载文件”取回原文件。</pre>`;
         }
       }
+      if (/\.(png|jpe?g|jpe|gif|webp)$/i.test(name) || /^image\//.test(attachment.type || "")) {
+        return `<img src="${escapeAttr(attachment.dataUrl)}" alt="${escapeAttr(attachment.name)}" style="max-width:100%;max-height:420px;border-radius:8px;object-fit:contain;background:#f8fafc;" />`;
+      }
       if (name.endsWith(".pdf")) {
         return `<iframe title="PDF 预览" src="${attachment.dataUrl}" style="width:100%;height:390px;border:0;"></iframe>`;
       }
@@ -2701,9 +2852,15 @@
     }
 
     function downloadAttachment(attachment) {
+      if (attachment.isBundle && Array.isArray(attachment.files)) {
+        attachment.files.forEach((file, index) => {
+          setTimeout(() => downloadAttachment(file), index * 180);
+        });
+        return;
+      }
       const link = document.createElement("a");
       link.href = attachment.dataUrl;
-      link.download = attachment.name;
+      link.download = attachment.path || attachment.name;
       link.click();
     }
 
@@ -2885,3 +3042,10 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
